@@ -8,6 +8,8 @@ import time
 
 df = pd.read_csv('/Users/Egor/Downloads/diapason_10.csv')
 
+df = df[df['check_sum'] <= np.quantile(df['check_sum'], 0.99)]
+
 d = dp.data_preparation_2(df)
 
 set = d[2]
@@ -31,14 +33,15 @@ if dd['check_sum'].max() % 50 == 0:
     right = int(dd['check_sum'].max())
 else:
     right = int(dd['check_sum'].max() + 50 - dd['check_sum'].max() % 50)
-
-res_prob = dp.probabilities(dd, df, [490, 940, 1040, 1240], 14900, right)
+    
+res_prob = dp.probabilities_random(d[0], d[1], set.index[:5], set.index, 14900, right)
 
 rp = res_prob[2][1:]
 res_prob_2 = pd.Series(rp)
 rp.append(1-res_prob_2.sum())
 
 h = (right - 14900) // 50
+
 #создание массива сумм чека с исходным распределением
 check_sum = []
 check_sum_type = np.random.choice(range(h), 10000, p = rp)
@@ -46,16 +49,7 @@ for i in range(10000):
     for j in range(h):
         if check_sum_type[i] == j:
             check_sum.append(random.randrange(14900 + j * 50, 14900 + (j+1) * 50, 1))
-
-#создание массива сумм чека с исходным распределением
-check_sum = []
-check_sum_type = np.random.choice(range(118), 8000, p = p[3])
-
-for i in range(8000):
-    for j in range(118):
-        if check_sum_type[i] == j:
-            check_sum.append(random.randrange(9000 + j * 50, 9000 + (j+1) * 50, 1))
-
+p = res_prob
 ds_0 = dd[dd['type_of_selected_button'] == 0]['amount']
 
 start = time.time()
