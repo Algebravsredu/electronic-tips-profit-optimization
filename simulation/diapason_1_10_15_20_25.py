@@ -5,15 +5,15 @@ import data_preparation as dp
 import random
 import time
 
-df = pd.read_csv('/Users/Egor/Downloads/diapason_1.csv')
+df = pd.read_csv('/Users/Egor/Downloads/diapason_1.csv') 
 
-df_p = dp.data_prep(df, '[10, 15, 20, 25]')
+df_p = dp.data_prep(df, '[10, 15, 20, 25]') #выбираем рассматриваемый диапазон
 
-res_prob = dp.probabilities(df_p, df, [10, 15, 20, 25], 1000, 1500)
+res_prob = dp.probabilities(df_p, df, [10, 15, 20, 25], 1000, 1500) #подсчитываем вероятности выбора набора, каждой из 4 кнопок набора и вероятности для моделирования сумм чека
 
 # создание массива сумм чека с исходным распределением
 check_sum = []
-check_sum_type = np.random.choice([0,1,2,3,4,5,6,7,8,9], 5000, p = res_prob[2])
+check_sum_type = np.random.choice([0,1,2,3,4,5,6,7,8,9], 5000, p = res_prob[2]) #5000 сумм чека создается для симуляции
 
 for i in range(5000):
   if check_sum_type[i] == 0:
@@ -37,18 +37,8 @@ for i in range(5000):
   elif check_sum_type[i] == 9:
     check_sum.append(random.randrange(1450, 1500, 1))
 
-df_0 = df_p[df_p['type_of_selected_button'] == 0]['amount']
+df_0 = df_p[df_p['type_of_selected_button'] == 0]['amount'] #чаевые оставленные вручную
 
-start = time.time()
+stats = sim.model_percent(check_sum, 10000, res_prob[0], res_prob[1], [10,15,20,25],df_0) #модели на вход подаются набор сумм чека, количество симуляций, вероятность выбора набора и ручного ввода, вероятность выбора каждой кнопки, рассматриваемый набор и набор чаевых, оставленных вручную
 
-stats = sim.model_percent(check_sum, 10000, res_prob[0], res_prob[1], [10,15,20,25],df_0)
-
-end = time.time() - start
-
-print(end)
-
-st = pd.DataFrame(stats)
-
-print(st)
-
-st.to_csv('/Users/Egor/Desktop/все/Результаты симуляций/diapason_1_10_15_20_25')
+st.to_csv('/Users/Egor/Desktop/все/Результаты симуляций/diapason_1_10_15_20_25') #сохранение результатов симуляции
