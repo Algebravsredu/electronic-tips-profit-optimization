@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 
 def model_random(check_sum, num_simulation, type_of_comb_prob, type_of_but_prob, every_but_prob,  set_of_combinations, set_of_comb_with_type,ds_0, s_o_c, p_1):
+    #подается на вход смоделированный набор сумм чека, число симуляций, вероятности предложения наборов, вероятности выбора набора или ручного ввода, вероятности выбора каждой кнопки из 4, наборы предлагаемых кнопок, наборы кнопок с типом, набор чаевых ручного ввода, 
+    ,,
     all_stats = []  # для сохранения результатов симуляции
 
     for i in range(num_simulation):
@@ -27,8 +29,6 @@ def model_random(check_sum, num_simulation, type_of_comb_prob, type_of_but_prob,
         #Если была нажата кнопка, случайно выбираем, какая из четырех была нажата
         tips_amount = []
         select_button = []
-        # if i % 1000 == 0:
-        #     print(i)
 
         for j in range(len(check_sum)):
             if type_of_selected_button[j] == 0:
@@ -49,8 +49,6 @@ def model_random(check_sum, num_simulation, type_of_comb_prob, type_of_but_prob,
                     else:
                         select_button.append(np.random.choice(set_of_combinations[select_type_of_combination[j]], size=1, p=every_but_prob[select_type_of_combination[j]]))
                         tips_amount.append(select_button[j] * check_sum[j] / 100)
-
-
 
 
         # Создание фрейма данных на основе входных значений и количества повторений
