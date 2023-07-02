@@ -8,7 +8,6 @@ import random
 import time
 
 df = pd.read_csv('/Users/Egor/Downloads/d6.csv')
-df = df[(df['region'] =='Москва') & (df['price_segment'] == 'Премиум (>2500)')]
 df_random = df[(df['values'] != '[10, 13, 17, 22]')]
 d_random = dp.data_preparation_2(df_random)
 
