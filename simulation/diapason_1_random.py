@@ -10,13 +10,13 @@ df = pd.read_csv('/Users/Egor/Downloads/diapason_1.csv')
 
 d = dp.data_preparation_2(df)
 
-set = d[2]
+set = d[2] #5 самых популярных наборов кнопок
 
 set_int = d[0]['values_int'].value_counts()
 
 set_of_comb = pd.Series(data = set_int.index, index = set.index)
 
-type_of_offered_button = []
+type_of_offered_button = [] #типы 5 самых популярных наборов (конкретные суммы или проценты)
 for comb in set_of_comb.values:
     if comb[3] >= 100:
         type_of_offered_button.append(2)
@@ -27,7 +27,7 @@ set_of_comb_w_type = pd.Series(data = type_of_offered_button, index = set.index)
 
 dd = d[0]
 
-p = dp.probabilities_random(d[0], d[1], set.index[:5], set.index, 1000, 1500)
+p = dp.probabilities_random(d[0], d[1], set.index[:5], set.index, 1000, 1500) #вероятности предложения наборов, вероятности выбора кнопок из этих наборов, вероятности для моделирования сумм чека
 
 print(p[2].values[7])
 #создание массива сумм чека с исходным распределением
@@ -42,7 +42,7 @@ for i in range(5000):
 ds_0 = dd[dd['type_of_selected_button'] == 0]['amount']
 
 start = time.time()
-stats = simt.model_random(check_sum, 10000, p[0], p[1], p[2], set_of_comb, set_of_comb_w_type, ds_0, set_of_comb.values[:5], p[2].values[0])
+stats = simt.model_random(check_sum, 10000, p[0], p[1], p[2], set_of_comb, set_of_comb_w_type, ds_0, set_of_comb.values[:5], p[2].values[0]) # 10000 симуляций 
 end = time.time() - start
 print(end)
 
